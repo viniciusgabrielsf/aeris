@@ -8,8 +8,6 @@ Aeris is a real-time air quality monitoring dashboard for Brazilian cities. Buil
 
 ## 🎥 Video Demo
 
-> **Coming Soon!** A video demonstration showcasing the dashboard features and functionality.
-
 <!--
 To add your video, replace this comment with one of the following:
 
