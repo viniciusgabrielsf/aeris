@@ -1,54 +1,60 @@
 # Aeris - Air Quality Dashboard for Brazilian Cities
 
-![Status](https://img.shields.io/badge/status-development-yellow)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-Aeris is an air quality monitoring dashboard that provides real-time and historical air quality data for major Brazilian cities. Built with Python, Streamlit, and SQLite, it offers an intuitive interface for tracking PM2.5, PM10, O3, NO2, SO2, and CO levels.
+Aeris is a real-time air quality monitoring dashboard for Brazilian cities. Built with Python, Streamlit, and the OpenAQ API v3, it provides an intuitive interface for tracking PM2.5, PM10, O3, NO2, SO2, and CO levels with interactive visualizations and multi-city comparisons.
+
+## 🎥 Video Demo
+
+> **Coming Soon!** A video demonstration showcasing the dashboard features and functionality.
+
+<!--
+To add your video, replace this comment with one of the following:
+
+For YouTube:
+[![Watch the demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
+For Vimeo:
+[![Watch the demo](https://i.vimeocdn.com/video/YOUR_VIDEO_ID_1280x720.jpg)](https://vimeo.com/YOUR_VIDEO_ID)
+
+For Loom:
+[![Watch the demo](https://cdn.loom.com/sessions/thumbnails/YOUR_VIDEO_ID-with-play.gif)](https://www.loom.com/share/YOUR_VIDEO_ID)
+
+Or use a simple link:
+[🎬 Watch Video Demo](YOUR_VIDEO_LINK_HERE)
+-->
 
 ## 🎯 Features
 
-- **Real-time Monitoring**: Live air quality data from OpenAQ network
-- **Multi-city Support**: Track air quality across 8 major Brazilian cities
-- **Time Series Analysis**: View trends over 24h, 7 days, and 30 days
-- **Visual Alerts**: Color-coded AQI (Air Quality Index) indicators
-- **City Comparisons**: Compare air quality across multiple cities
-- **Data Export**: Download data in CSV format
-- **Automated Collection**: Background scheduler for continuous data updates
+- **Real-time Monitoring**: Live air quality data from OpenAQ API v3
+- **Multi-city Support**: Track air quality across Brazilian cities (São Paulo, Rio de Janeiro, and more)
+- **Interactive Visualizations**: Plotly charts and OpenStreetMap integration
+- **Color-coded AQI**: EPA standard Air Quality Index with health recommendations
+- **City Comparisons**: Side-by-side comparison of multiple cities with rankings
+- **Detailed Analysis**: Individual pollutant levels and monitoring station locations
+- **Smart Caching**: Optimized data fetching with configurable cache duration
 
 ## 🏙️ Monitored Cities
 
-- São Paulo (SP)
-- Rio de Janeiro (RJ)
-- Belo Horizonte (MG)
-- Curitiba (PR)
-- Brasília (DF)
-- Salvador (BA)
-- Fortaleza (CE)
-- Porto Alegre (RS)
+The dashboard supports the following Brazilian cities:
 
-## 🚨 IMPORTANT: OpenAQ API v3 Update
+- **São Paulo (SP)** - ✅ Data available
+- **Rio de Janeiro (RJ)** - ✅ Data available
+- Belo Horizonte (MG) - Limited/no data
+- Curitiba (PR) - Limited/no data
+- Brasília (DF) - Limited/no data
+- Salvador (BA) - Limited/no data
+- Fortaleza (CE) - Limited/no data
+- Porto Alegre (RS) - Limited/no data
 
-**⚠️ Breaking Change**: OpenAQ has migrated to v3 API (as of January 31, 2025)
-
-- **v1 and v2 APIs are RETIRED** and no longer work
-- **v3 requires API authentication** (free tier available)
-- You must register and obtain an API key
-
-### Getting Your Free API Key
-
-1. **Register** at: https://explore.openaq.org/register
-2. **Sign in** and navigate to your account settings
-3. **Copy your API key** from the settings page
-4. **Add to `.env` file** (see Setup section below)
-
-**Note**: The API key is free, but registration is required. Treat your API key like a password.
+**Note:** Data availability depends on active monitoring stations reporting to OpenAQ. Most Brazilian cities outside São Paulo and Rio de Janeiro have limited air quality monitoring infrastructure.
 
 ## 📋 Prerequisites
 
 - Python 3.9 or higher
-- OpenAQ API key (free - see above)
-- 500 MB free disk space (for database)
+- OpenAQ API key (free - see [API Key Setup Guide](claude_code_explore_plan/API_KEY_SETUP.md))
 - Internet connection
 
 ## 🚀 Quick Start
@@ -83,74 +89,76 @@ cp .env.example .env
 nano .env  # or use your preferred editor
 ```
 
-Add this line to your `.env` file:
+Add your API key to the `.env` file:
 ```bash
 OPENAQ_API_KEY=your_api_key_here
 ```
 
-### 5. Test the Setup
+**Need an API key?** See the detailed [API Key Setup Guide](claude_code_explore_plan/API_KEY_SETUP.md) for step-by-step instructions.
 
-Run the test collection script to verify everything works:
-
-```bash
-python test_collection.py
-```
-
-This will:
-- Test API connectivity
-- Initialize the database
-- Collect sample data from 3 cities
-- Display summary statistics
-
-### 6. Run the Dashboard (Coming Soon)
+### 5. Run the Dashboard
 
 ```bash
 streamlit run app.py
 ```
 
-The dashboard will be available at: http://localhost:8501
+The dashboard will automatically open at: http://localhost:8501
+
+### 6. (Optional) Test API Connection
+
+Run the test collection script to verify API connectivity:
+
+```bash
+python test_collection.py
+```
 
 ## 📁 Project Structure
 
 ```
 aeris/
+├── app.py                     # Main Streamlit application
 ├── config.py                  # Configuration management
 ├── requirements.txt           # Python dependencies
-├── test_collection.py         # Test data collection
+├── test_collection.py         # API testing script
 │
 ├── data/                      # Data collection modules
 │   ├── __init__.py
-│   └── data_collector.py     # OpenAQ API client
+│   └── data_collector.py     # OpenAQ API v3 client
 │
 ├── database/                  # Database operations
 │   ├── __init__.py
-│   └── database.py           # SQLite operations
+│   └── database.py           # SQLite operations (ready, not integrated)
 │
 ├── utils/                     # Utilities
 │   ├── __init__.py
-│   └── logger.py             # Logging configuration
+│   ├── logger.py             # Logging system
+│   └── aqi.py                # AQI calculations
 │
-├── views/                     # Streamlit dashboard pages
-│   └── (to be implemented)
+├── views/                     # Dashboard pages
+│   ├── __init__.py
+│   ├── home.py               # Home page
+│   ├── dashboard.py          # City dashboard
+│   ├── comparison.py         # City comparison
+│   └── about.py              # About page
 │
-├── tests/                     # Unit tests
-│   └── (to be implemented)
+├── tests/                     # Unit tests (future)
 │
 └── data_storage/              # Local data storage
     ├── aeris.db              # SQLite database
-    ├── aeris.log             # Application logs
-    └── cache/                # API response cache
+    └── aeris.log             # Application logs
 ```
 
 ## 🗄️ Database Schema
 
-### Tables
+The database module is fully implemented but **not currently integrated** with the dashboard. The dashboard uses direct API calls with Streamlit caching for optimal performance. See [DATABASE_USAGE.md](DATABASE_USAGE.md) for architecture details.
+
+### Implemented Tables
 
 1. **cities** - Monitoring locations and stations
 2. **air_measurements** - Time series air quality data
 3. **alerts** - Air quality alerts and notifications
 
-### Key Features
+### Features (Ready for Integration)
 
 - Optimized indexes for fast queries
 - 90-day data retention (configurable)
@@ -219,45 +227,61 @@ Expected output:
 
 ## 📝 Development Roadmap
 
-### Phase 1: Foundation ✅ (Current)
+### Phase 1: Foundation ✅ (Complete)
 - [x] Project structure
 - [x] Configuration management
-- [x] OpenAQ API client (v3 support needed)
+- [x] OpenAQ API v3 client with authentication
 - [x] Database schema and operations
 - [x] Logging system
+- [x] AQI calculation utilities
 - [x] Test collection script
 
-### Phase 2: API v3 Migration 🚧 (Next)
-- [ ] Update API client for v3 endpoints
-- [ ] Implement API key authentication
-- [ ] Test with real API credentials
-- [ ] Update error handling for v3
+### Phase 2: API v3 Migration ✅ (Complete)
+- [x] Updated API client for v3 endpoints
+- [x] Implemented API key authentication
+- [x] Tested with real API credentials
+- [x] Updated error handling for v3
+- [x] Response format processing
 
-### Phase 3: Dashboard (Upcoming)
-- [ ] Main dashboard view
-- [ ] City selector
-- [ ] Real-time AQI display
-- [ ] Time series charts
-- [ ] Alert system
+### Phase 3: Dashboard ✅ (Complete)
+- [x] Main dashboard application
+- [x] Home page with city overview
+- [x] City dashboard with detailed metrics
+- [x] Multi-city comparison page
+- [x] About page with documentation
+- [x] Interactive Plotly visualizations
+- [x] Real-time AQI display with color coding
+- [x] Health recommendations
 
-### Phase 4: Advanced Features (Future)
-- [ ] Multi-city comparison
-- [ ] Data export functionality
-- [ ] Historical data analysis
-- [ ] Predictive analytics
-- [ ] Mobile responsive design
+### Phase 4: Future Enhancements 📋 (Planned)
+- [ ] Database integration for historical data
+- [ ] Background scheduler for automated collection
+- [ ] 7-day and 30-day trend analysis
+- [ ] Data export functionality (CSV, Excel)
+- [ ] Email/SMS alerts for poor air quality
+- [ ] Docker deployment
+- [ ] Unit test coverage
+- [ ] Mobile responsiveness improvements
 
-## ⚠️ Known Issues
+## ⚠️ Known Limitations
 
-1. **OpenAQ API v3 Migration Required**
-   - Status: In progress
-   - Impact: Data collection not functional until v3 implementation complete
-   - Resolution: Update data_collector.py to use v3 endpoints
+1. **Limited City Coverage**
+   - Status: Expected behavior
+   - Details: Only São Paulo and Rio de Janeiro have active monitoring stations reporting to OpenAQ
+   - Reason: Real-world infrastructure limitation in Brazil
+   - Impact: Other cities show "no data available" message
 
-2. **API Key Authentication**
-   - Status: Needs implementation
-   - Impact: Cannot fetch data without proper authentication
-   - Resolution: Implement X-API-Key header in requests
+2. **No Historical Data**
+   - Status: By design (current architecture)
+   - Details: Dashboard uses direct API calls without database persistence
+   - Impact: Cannot show historical trends (7-day, 30-day)
+   - Resolution: See [DATABASE_USAGE.md](DATABASE_USAGE.md) for integration guide
+
+3. **Data Freshness**
+   - Status: Working as designed
+   - Details: Data cached for 15-30 minutes for performance
+   - Impact: May not show absolute real-time data
+   - Resolution: Use "Refresh Data" button for latest data
 
 ## 🤝 Contributing
 
@@ -277,7 +301,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - **OpenAQ** - For providing free air quality data
 - **Streamlit** - For the amazing dashboard framework
+- **Claude Code by Anthropic** - AI-assisted development that accelerated project implementation
+- **Cursor** - AI-powered code editor used for development
 - **Python Community** - For excellent libraries and tools
+
+### Development Tools
+
+This project was built with the support of AI-powered development tools:
+
+- **[Claude Code](https://claude.ai/code)** - Anthropic's AI coding assistant that helped with architecture design, code generation, API integration, and comprehensive documentation
+- **[Cursor](https://cursor.com)** - AI-powered code editor that enhanced the development workflow
+
+These tools significantly accelerated the development process, from initial concept to production-ready dashboard.
 
 ## 📞 Support
 
@@ -288,23 +323,59 @@ For issues or questions:
 
 ## 📚 Additional Documentation
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed system architecture
-- [CLAUDE.md](CLAUDE.md) - Claude Code guidance
-- [AIR_QUALITY_RESEARCH.md](AIR_QUALITY_RESEARCH.md) - API research and analysis
-- [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) - Step-by-step implementation
+### Core Documentation
+- [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) - Current project status and progress
+- [DATABASE_USAGE.md](DATABASE_USAGE.md) - Database architecture and integration guide
+- [CLAUDE.md](CLAUDE.md) - Claude Code development guidelines
+
+### Research & Planning (in `claude_code_explore_plan/`)
+- [API_KEY_SETUP.md](claude_code_explore_plan/API_KEY_SETUP.md) - Detailed API key setup guide
+- [V3_MIGRATION_COMPLETE.md](claude_code_explore_plan/V3_MIGRATION_COMPLETE.md) - API v3 migration details
+- [ARCHITECTURE.md](claude_code_explore_plan/ARCHITECTURE.md) - System architecture
+- [AIR_QUALITY_RESEARCH.md](claude_code_explore_plan/AIR_QUALITY_RESEARCH.md) - API research
+- [IMPLEMENTATION_GUIDE.md](claude_code_explore_plan/IMPLEMENTATION_GUIDE.md) - Implementation steps
 
 ## 🔄 Recent Changes
 
-### 2025-11-01
-- ✅ Initial project structure created
-- ✅ Configuration system implemented
-- ✅ Database schema designed
-- ✅ OpenAQ client skeleton created
-- ⚠️ Discovered OpenAQ v3 API migration requirement
-- 📝 Documented API key requirement
+### Version 1.0.0-beta (2025-11-01)
+
+**Major Release - Full Dashboard Operational** 🎉
+
+- ✅ **OpenAQ API v3 Integration Complete**
+  - Updated all API endpoints to v3
+  - Implemented API key authentication
+  - Added support for both list and dict response formats
+
+- ✅ **Full Streamlit Dashboard**
+  - Home page with multi-city overview
+  - City dashboard with detailed metrics
+  - City comparison with interactive charts
+  - About page with comprehensive documentation
+
+- ✅ **AQI Calculation System**
+  - EPA standard formulas for all pollutants (PM2.5, PM10, O₃, NO₂, SO₂, CO)
+  - Color-coded categories with health recommendations
+  - Dominant pollutant identification
+
+- ✅ **Interactive Visualizations**
+  - Plotly time series charts
+  - OpenStreetMap integration for station locations
+  - Real-time data updates
+
+- ✅ **Performance Optimizations**
+  - Smart caching (15-30 minute TTL)
+  - Optimized API usage
+  - Fast page loads
+
+- 📝 **Comprehensive Documentation**
+  - IMPLEMENTATION_STATUS.md - Full project status
+  - DATABASE_USAGE.md - Architecture guide
+  - API_KEY_SETUP.md - Setup instructions
+
+**Status:** Production-ready for real-time air quality monitoring ✅
 
 ---
 
-**Note**: This project is under active development. The OpenAQ API v3 migration is the current priority. Check back for updates!
-
 **Last Updated**: November 1, 2025
+**Version**: 1.0.0-beta
+**Status**: Active Development

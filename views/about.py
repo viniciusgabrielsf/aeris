@@ -24,17 +24,29 @@ def show():
 
     st.markdown("""
     Aeris aims to make air quality data accessible and understandable for everyone in Brazil.
-    By providing real-time monitoring, historical trends, and easy-to-understand visualizations,
+    By providing real-time monitoring and easy-to-understand visualizations,
     we empower citizens to make informed decisions about their health and environment.
 
-    ### Key Features
+    ### Current Implementation
 
-    - **Real-time Monitoring**: Track current air quality levels across major Brazilian cities
-    - **Multiple Pollutants**: Monitor PM2.5, PM10, O₃, NO₂, SO₂, and CO
-    - **AQI Calculations**: Standardized Air Quality Index based on EPA guidelines
-    - **Interactive Visualizations**: Charts, maps, and trends powered by Plotly
-    - **City Comparisons**: Compare air quality across multiple cities
-    - **OpenAQ Integration**: Data from the world's largest open air quality database
+    **Version:** 1.0.0-beta (Production-ready)
+
+    - **Real-time Monitoring**: Live data from OpenAQ API v3
+    - **Four Dashboard Pages**: Home overview, City details, Comparison, and About
+    - **Multiple Pollutants**: PM2.5, PM10, O₃, NO₂, SO₂, and CO tracking
+    - **EPA AQI Calculations**: Color-coded categories with health recommendations
+    - **Interactive Visualizations**: Plotly charts and OpenStreetMap integration
+    - **Multi-city Comparisons**: Side-by-side analysis with rankings
+    - **Smart Caching**: 15-30 minute data caching for optimal performance
+    - **Monitoring Stations**: Display locations on interactive maps
+
+    ### Architecture
+
+    The dashboard uses a **direct API approach** for simplicity and real-time data:
+    - Data fetched on-demand from OpenAQ API v3
+    - Cached in memory for performance (15-30 minutes)
+    - No database persistence (current design choice)
+    - See [DATABASE_USAGE.md](https://github.com/viniciusgabrielsf/aeris/blob/main/DATABASE_USAGE.md) for details and alternative architectures
     """)
 
     st.markdown("---")
@@ -47,14 +59,15 @@ def show():
     with col1:
         st.markdown("""
         ### Frontend
-        - **Streamlit** - Interactive web framework
-        - **Plotly** - Data visualization
-        - **Pandas** - Data processing
+        - **Streamlit 1.31** - Interactive web framework
+        - **Plotly 5.18** - Data visualization
+        - **Pandas 2.2** - Data processing
 
         ### Backend
         - **Python 3.9+** - Core language
-        - **SQLite** - Local data storage
-        - **APScheduler** - Background jobs
+        - **Requests** - HTTP client for API calls
+        - **SQLite** - Database (ready, not integrated)
+        - **Direct API** - Current data architecture
         """)
 
     with col2:
@@ -89,12 +102,14 @@ def show():
 
     ### Data Coverage in Brazil
 
-    Air quality monitoring in Brazil varies by region:
-    - **São Paulo**: Excellent coverage with CETESB stations
-    - **Rio de Janeiro**: Good coverage with INEA stations
-    - **Other major cities**: Moderate to limited coverage
+    Air quality monitoring in Brazil varies significantly by region:
+    - **São Paulo**: ✅ **Active** - Excellent coverage with CETESB stations
+    - **Rio de Janeiro**: ✅ **Active** - Good coverage with INEA stations
+    - **Other major cities**: ⚠️ **Limited/No Data** - Most Brazilian cities outside São Paulo and Rio have limited or no monitoring stations reporting to OpenAQ
 
-    **Note**: Data availability depends on local monitoring infrastructure and may vary over time.
+    **Current Reality**: Only São Paulo and Rio de Janeiro have active monitoring stations with data available through OpenAQ. This reflects the real-world infrastructure limitation in Brazil, not a limitation of the dashboard.
+
+    **Note**: The dashboard is designed to support all major Brazilian cities, but data availability depends entirely on local monitoring infrastructure and whether stations report to the OpenAQ platform.
     """)
 
     st.markdown("---")
@@ -139,9 +154,9 @@ def show():
     with col1:
         st.markdown("""
         ### Project Links
-        - [GitHub Repository](https://github.com/yourusername/aeris)
-        - [Documentation](https://github.com/yourusername/aeris/wiki)
-        - [Report Issues](https://github.com/yourusername/aeris/issues)
+        - [GitHub Repository](https://github.com/viniciusgabrielsf/aeris)
+        - [Documentation](https://github.com/viniciusgabrielsf/aeris)
+        - [Report Issues](https://github.com/viniciusgabrielsf/aeris/issues)
         """)
 
     with col2:
@@ -167,21 +182,30 @@ def show():
 
     with st.expander("How often is the data updated?"):
         st.markdown("""
-        Data is fetched from OpenAQ every 15-30 minutes depending on the page.
-        The OpenAQ platform aggregates data from various sources, with update
-        frequencies ranging from hourly to daily.
+        **Dashboard Caching:** Data is cached for 15-30 minutes depending on the page:
+        - Home page: 30 minutes
+        - City dashboard: 15 minutes
+        - Comparison page: 15 minutes
+
+        **OpenAQ Updates:** The OpenAQ platform aggregates data from government monitoring stations with update frequencies ranging from hourly to daily, depending on the source.
+
+        **Refresh Data:** You can manually refresh data using the "🔄 Refresh Data" button at the bottom of most pages to clear the cache and fetch the latest data.
         """)
 
     with st.expander("Why is there no data for my city?"):
         st.markdown("""
-        Air quality monitoring coverage in Brazil varies significantly. Some cities
-        have extensive monitoring networks, while others have limited or no coverage.
-        This depends on local government infrastructure and monitoring programs.
+        **Current Status:** Only São Paulo and Rio de Janeiro have active monitoring stations reporting to OpenAQ.
 
-        If your city has no data, consider:
-        - Checking nearby larger cities
-        - Contacting your local environmental agency
-        - Advocating for better air quality monitoring in your region
+        **Reason:** This is a real-world infrastructure limitation, not a dashboard limitation. Most Brazilian cities outside these two major metropolitan areas either:
+        - Don't have air quality monitoring stations
+        - Have stations that don't report to the OpenAQ platform
+        - Have monitoring programs that only share data through local/regional systems
+
+        **What you can do:**
+        - Check nearby larger cities (São Paulo or Rio de Janeiro)
+        - Contact your local environmental agency to inquire about air quality monitoring
+        - Advocate for better air quality monitoring infrastructure in your region
+        - Check if your city has a local air quality monitoring website or app
         """)
 
     with st.expander("How accurate is this data?"):
@@ -194,6 +218,21 @@ def show():
 
         We recommend using this data as a general indicator rather than for
         critical health decisions. Consult official sources for authoritative information.
+        """)
+
+    with st.expander("Why is there no historical data or trends?"):
+        st.markdown("""
+        **Current Architecture:** The dashboard uses a direct API approach without database persistence.
+
+        **By Design:** This keeps the application simple, fast, and always shows the most recent data. Data is cached in memory for 15-30 minutes for performance but not permanently stored.
+
+        **What this means:**
+        - You see current/recent air quality data
+        - No 7-day or 30-day historical trends
+        - No time-based analysis or predictions
+        - Simpler architecture with fewer moving parts
+
+        **Future Plans:** Database integration for historical data is documented and ready to implement. See [DATABASE_USAGE.md](https://github.com/viniciusgabrielsf/aeris/blob/main/DATABASE_USAGE.md) for technical details about alternative architectures.
         """)
 
     with st.expander("Can I export the data?"):
@@ -216,7 +255,7 @@ def show():
         - Contributing code improvements
         - Sharing the project with others
 
-        Visit our [GitHub repository](https://github.com/yourusername/aeris) to get started.
+        Visit our [GitHub repository](https://github.com/viniciusgabrielsf/aeris) to get started.
         """)
 
     st.markdown("---")
@@ -229,8 +268,18 @@ def show():
 
     - **OpenAQ** - For providing free access to global air quality data
     - **Streamlit** - For the amazing web framework
+    - **Claude Code by Anthropic** - AI-assisted development that accelerated the entire project implementation
     - **Brazilian Environmental Agencies** - For maintaining monitoring stations
     - **Open Source Community** - For the tools and libraries that power this project
+
+    ### Development
+
+    This project was built with the support of **Claude Code** (claude.ai/code), Anthropic's AI-powered coding assistant, which helped with:
+    - Architecture design and implementation planning
+    - Code generation for all dashboard components
+    - API integration and data processing
+    - Documentation and best practices
+    - Debugging and optimization
 
     ### License
 
@@ -245,9 +294,11 @@ def show():
     st.markdown("""
     For questions, suggestions, or collaboration opportunities:
 
-    - **GitHub**: [Open an issue](https://github.com/yourusername/aeris/issues)
-    - **Email**: your.email@example.com
-    - **Project**: [github.com/yourusername/aeris](https://github.com/yourusername/aeris)
+    - **GitHub**: [Open an issue](https://github.com/viniciusgabrielsf/aeris/issues)
+    - **Project**: [github.com/viniciusgabrielsf/aeris](https://github.com/viniciusgabrielsf/aeris)
+    - **Email**: alinecristinapinto@ufmg.br
+    - **Email**: viniciusgabrielsf@ufmg.br
+
     """)
 
     st.markdown("---")

@@ -27,8 +27,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': 'https://github.com/yourusername/aeris',
-        'Report a bug': 'https://github.com/yourusername/aeris/issues',
+        'Get Help': 'https://github.com/viniciusgabrielsf/aeris',
+        'Report a bug': 'https://github.com/viniciusgabrielsf/aeris/issues',
         'About': """
         # Aeris Air Quality Dashboard
 
@@ -117,7 +117,7 @@ with col1:
     st.caption("🌍 Data Source: [OpenAQ](https://openaq.org)")
 
 with col2:
-    st.caption("📖 [Documentation](https://github.com/yourusername/aeris)")
+    st.caption("📖 [Documentation](https://github.com/viniciusgabrielsf/aeris)")
 
 with col3:
     st.caption("Made with ❤️ using Streamlit")

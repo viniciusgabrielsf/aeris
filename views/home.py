@@ -203,5 +203,5 @@ def show():
         st.markdown("- [Brazil Environmental Agency](https://www.gov.br/ibama)")
 
     with col3:
-        st.markdown("- [Project Documentation](https://github.com/yourusername/aeris)")
-        st.markdown("- [Report an Issue](https://github.com/yourusername/aeris/issues)")
+        st.markdown("- [Project Documentation](https://github.com/viniciusgabrielsf/aeris)")
+        st.markdown("- [Report an Issue](https://github.com/viniciusgabrielsf/aeris/issues)")
