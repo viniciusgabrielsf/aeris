@@ -1,0 +1,66 @@
+# Aeris - Air Quality Dashboard
+# Python 3.9+
+
+# Core Web Framework
+streamlit==1.31.1              # Interactive dashboard framework
+
+# Data Processing
+pandas==2.2.0                  # Time series data manipulation
+numpy==1.26.3                  # Numerical operations
+
+# Visualization
+plotly==5.18.0                 # Interactive charts and maps
+
+# HTTP Client
+requests==2.31.0               # API client for OpenAQ
+urllib3==2.1.0                 # HTTP library (requests dependency)
+
+# Scheduling
+APScheduler==3.10.4            # Background job scheduler
+
+# Configuration Management
+python-dotenv==1.0.1           # Environment variables from .env files
+
+# Database Utilities (SQLite is built-in, but these help)
+# No additional packages needed for SQLite
+
+# Date/Time Utilities
+python-dateutil==2.8.2         # Date parsing and manipulation
+pytz==2024.1                   # Timezone support for Brazilian cities
+
+# Logging
+colorlog==6.8.2                # Colored logging output
+
+# Data Validation
+pydantic==2.6.1                # Data validation and settings management
+
+# Development Dependencies
+
+# Testing
+pytest==8.0.0                  # Testing framework
+pytest-cov==4.1.0              # Coverage reports
+pytest-mock==3.12.0            # Mocking utilities
+
+# Code Quality
+ruff==0.2.1                    # Fast Python linter and formatter
+mypy==1.8.0                    # Static type checker
+types-requests==2.31.0.20240125  # Type stubs for requests
+types-python-dateutil==2.8.19.20240106  # Type stubs for dateutil
+
+# Optional: Enhanced Features
+
+# Caching (if needed beyond Streamlit's built-in)
+cachetools==5.3.2              # Additional caching utilities
+
+# Performance monitoring
+psutil==5.9.8                  # System and process utilities
+
+# Export functionality
+openpyxl==3.1.2                # Excel export support
+reportlab==4.1.0               # PDF generation
+
+# Retry logic enhancement
+tenacity==8.2.3                # Retry library with exponential backoff
+
+# Note: Production deployments should pin exact versions
+# Development can use ranges like: streamlit>=1.31.0,<2.0.0
