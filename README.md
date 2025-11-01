@@ -26,6 +26,8 @@ Or use a simple link:
 [🎬 Watch Video Demo](YOUR_VIDEO_LINK_HERE)
 -->
 
+[![Watch the demo](https://img.youtube.com/vi/oPhyBkjH7_A/maxresdefault.jpg)](https://www.youtube.com/watch?v=oPhyBkjH7_A)
+
 ## 🎯 Features
 
 - **Real-time Monitoring**: Live air quality data from OpenAQ API v3
